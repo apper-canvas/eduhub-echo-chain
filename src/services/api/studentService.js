@@ -1,6 +1,71 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
+import Error from "@/components/ui/Error";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Helper functions for data formatting
+function formatDateForAPI(dateValue) {
+  if (!dateValue) return new Date().toISOString().split('T')[0];
+  
+  // If it's already a date string in YYYY-MM-DD format, return as is
+  if (typeof dateValue === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+    return dateValue;
+  }
+  
+  // If it's a Date object or ISO string, convert to YYYY-MM-DD
+  const date = new Date(dateValue);
+  if (isNaN(date.getTime())) {
+    return new Date().toISOString().split('T')[0];
+  }
+  
+  return date.toISOString().split('T')[0];
+}
+
+function formatURLForAPI(urlValue) {
+  if (!urlValue || urlValue.trim() === '') return '';
+  
+  const url = urlValue.trim();
+  
+  // If it already starts with http:// or https://, return as is
+  if (url.match(/^https?:\/\//)) {
+    return url;
+  }
+  
+  // If it looks like a URL without protocol, add https://
+  if (url.includes('.') && !url.includes(' ')) {
+    return `https://${url}`;
+  }
+  
+  // If it doesn't look like a valid URL, return empty string
+  return '';
+}
+
+function formatCurrencyForAPI(currencyValue) {
+  if (currencyValue === null || currencyValue === undefined || currencyValue === '') {
+    return 0.00;
+  }
+  
+  // If it's already a number, ensure it's a float
+  if (typeof currencyValue === 'number') {
+    return parseFloat(currencyValue.toFixed(2));
+  }
+  
+  // If it's a string, parse it
+  if (typeof currencyValue === 'string') {
+    // Remove currency symbols and commas
+    const cleanValue = currencyValue.replace(/[$,]/g, '').trim();
+    const parsed = parseFloat(cleanValue);
+    
+    if (isNaN(parsed)) {
+      return 0.00;
+    }
+    
+    return parseFloat(parsed.toFixed(2));
+  }
+  
+  return 0.00;
+}
 
 export const studentService = {
   async getAll() {
@@ -10,8 +75,6 @@ export const studentService = {
       const apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
-
       const params = {
         fields: [
 {"field": {"Name": "Id"}},
@@ -131,15 +194,15 @@ Name: `${studentData.first_name_c || studentData.firstName} ${studentData.last_n
           email_c: studentData.email_c || studentData.email,
           phone_c: studentData.phone_c || studentData.phone,
           grade_c: studentData.grade_c || studentData.grade,
-          enrollment_date_c: studentData.enrollment_date_c || studentData.enrollmentDate || new Date().toISOString().split('T')[0],
-          photo_c: studentData.photo_c || studentData.photo || "",
+enrollment_date_c: formatDateForAPI(studentData.enrollment_date_c || studentData.enrollmentDate),
+          photo_c: formatURLForAPI(studentData.photo_c || studentData.photo),
           address_c: studentData.address_c || studentData.address || "",
           parent_contact_c: studentData.parent_contact_c || studentData.parentContact || "",
           status_c: studentData.status_c || studentData.status || "Active",
-          subscribe_to_newsletter_c: studentData.subscribe_to_newsletter_c || (studentData.subscribeNewsletter ? "Yes" : "No"),
+          subscribe_to_newsletter_c: studentData.subscribe_to_newsletter_c || (studentData.subscribeNewsletter ? "Subscribe" : "Unsubscribe"),
           agree_to_terms_c: studentData.agree_to_terms_c || (studentData.agreeTerms ? "Agree" : "Disagree"),
-          tuition_fee_c: studentData.tuition_fee_c || studentData.tuitionFee || null,
-          scholarship_amount_c: studentData.scholarship_amount_c || studentData.scholarshipAmount || null,
+          tuition_fee_c: formatCurrencyForAPI(studentData.tuition_fee_c || studentData.tuitionFee),
+scholarship_amount_c: formatCurrencyForAPI(studentData.scholarship_amount_c || studentData.scholarshipAmount),
           preferred_study_mode_c: studentData.preferred_study_mode_c || studentData.studyMode || "",
           study_type_c: studentData.study_type_c || studentData.studyType || "",
           personal_website_c: studentData.personal_website_c || studentData.personalWebsite || "",
@@ -167,8 +230,8 @@ Name: `${studentData.first_name_c || studentData.firstName} ${studentData.last_n
         if (failed.length > 0) {
           console.error(`Failed to create ${failed.length} student records:`, JSON.stringify(failed));
           failed.forEach(record => {
-            if (record.errors) {
-              record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+if (record.errors) {
+              record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error.message}`));
             }
             if (record.message) toast.error(record.message);
           });
@@ -205,15 +268,15 @@ first_name_c: studentData.first_name_c || studentData.firstName,
           email_c: studentData.email_c || studentData.email,
           phone_c: studentData.phone_c || studentData.phone,
           grade_c: studentData.grade_c || studentData.grade,
-          enrollment_date_c: studentData.enrollment_date_c || studentData.enrollmentDate,
-          photo_c: studentData.photo_c || studentData.photo,
+enrollment_date_c: formatDateForAPI(studentData.enrollment_date_c || studentData.enrollmentDate),
+          photo_c: formatURLForAPI(studentData.photo_c || studentData.photo),
           address_c: studentData.address_c || studentData.address,
           parent_contact_c: studentData.parent_contact_c || studentData.parentContact,
           status_c: studentData.status_c || studentData.status,
-          subscribe_to_newsletter_c: studentData.subscribe_to_newsletter_c || (studentData.subscribeNewsletter ? "Yes" : "No"),
+          subscribe_to_newsletter_c: studentData.subscribe_to_newsletter_c || (studentData.subscribeNewsletter ? "Subscribe" : "Unsubscribe"),
           agree_to_terms_c: studentData.agree_to_terms_c || (studentData.agreeTerms ? "Agree" : "Disagree"),
-          tuition_fee_c: studentData.tuition_fee_c || studentData.tuitionFee,
-          scholarship_amount_c: studentData.scholarship_amount_c || studentData.scholarshipAmount,
+          tuition_fee_c: formatCurrencyForAPI(studentData.tuition_fee_c || studentData.tuitionFee),
+scholarship_amount_c: formatCurrencyForAPI(studentData.scholarship_amount_c || studentData.scholarshipAmount),
           preferred_study_mode_c: studentData.preferred_study_mode_c || studentData.studyMode,
           study_type_c: studentData.study_type_c || studentData.studyType,
           personal_website_c: studentData.personal_website_c || studentData.personalWebsite,
@@ -242,7 +305,7 @@ first_name_c: studentData.first_name_c || studentData.firstName,
           console.error(`Failed to update ${failed.length} student records:`, JSON.stringify(failed));
           failed.forEach(record => {
             if (record.errors) {
-              record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error.message}`));
             }
             if (record.message) toast.error(record.message);
           });

@@ -154,7 +154,7 @@ const validateForm = () => {
     try {
       const studentData = {
         ...formData,
-        enrollmentDate: student ? student.enrollmentDate : new Date().toISOString()
+enrollmentDate: student ? (student.enrollmentDate || student.enrollment_date_c || new Date().toISOString().split('T')[0]) : new Date().toISOString().split('T')[0]
       };
       
       await onSave(studentData);

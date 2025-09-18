@@ -34,9 +34,9 @@ const StudentCard = ({ student, onEdit, onDelete }) => {
         <div className="flex items-start space-x-4 mb-4">
           <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center flex-shrink-0">
 {(student.photo_c || student.photo) ? (
-              <img
-                src={student.photo}
-alt={`${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}`}
+<img
+                src={student.photo_c || student.photo || '/placeholder-avatar.png'}
+                alt={`${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}`}
                 className="w-16 h-16 rounded-full object-cover"
               />
             ) : (
