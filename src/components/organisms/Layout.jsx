@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-
+import { AuthContext } from "../../App";
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
@@ -116,6 +117,13 @@ const Layout = () => {
     </>
   );
 
+const { logout } = useContext(AuthContext);
+  const user = useSelector((state) => state.user.user);
+  
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <div className="h-screen flex overflow-hidden bg-gray-50">
       <DesktopSidebar />
@@ -139,7 +147,44 @@ const Layout = () => {
                 EduHub
               </h1>
             </div>
-            <div className="w-10"></div>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleLogout}
+              className="text-gray-600 hover:text-gray-900"
+            >
+              <ApperIcon name="LogOut" className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Desktop header with logout */}
+        <div className="hidden lg:block bg-white border-b border-gray-200 px-6 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg flex items-center justify-center mr-3">
+                <ApperIcon name="GraduationCap" className="w-5 h-5 text-white" />
+              </div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent">
+                EduHub
+              </h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              {user && (
+                <span className="text-sm text-gray-600">
+                  Welcome, {user.firstName || user.name || 'User'}
+                </span>
+              )}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleLogout}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                <ApperIcon name="LogOut" className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
 

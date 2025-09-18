@@ -41,11 +41,11 @@ const Students = () => {
     if (!searchQuery.trim()) {
       setFilteredStudents(students);
     } else {
-      const filtered = students.filter(student =>
-        student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.grade.toLowerCase().includes(searchQuery.toLowerCase())
+const filtered = students.filter(student =>
+        (student.first_name_c || student.firstName || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (student.last_name_c || student.lastName || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (student.email_c || student.email || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (student.grade_c || student.grade || "").toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredStudents(filtered);
     }
@@ -134,8 +134,8 @@ const Students = () => {
             />
           </div>
           <div className="flex items-center space-x-4 text-sm text-gray-600">
-            <span>Total: <strong>{students.length}</strong> students</span>
-            <span>Active: <strong>{students.filter(s => s.status === "Active").length}</strong></span>
+<span>Total: <strong>{students.length}</strong> students</span>
+            <span>Active: <strong>{students.filter(s => (s.status_c || s.status) === "Active").length}</strong></span>
           </div>
         </div>
       </div>

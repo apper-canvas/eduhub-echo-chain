@@ -33,10 +33,10 @@ const StudentCard = ({ student, onEdit, onDelete }) => {
       <CardContent className="p-6">
         <div className="flex items-start space-x-4 mb-4">
           <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center flex-shrink-0">
-            {student.photo ? (
+{(student.photo_c || student.photo) ? (
               <img
                 src={student.photo}
-                alt={`${student.firstName} ${student.lastName}`}
+alt={`${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}`}
                 className="w-16 h-16 rounded-full object-cover"
               />
             ) : (
@@ -45,12 +45,12 @@ const StudentCard = ({ student, onEdit, onDelete }) => {
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-lg font-semibold text-gray-900 truncate">
-              {student.firstName} {student.lastName}
+{student.first_name_c || student.firstName} {student.last_name_c || student.lastName}
             </h3>
-            <p className="text-sm text-gray-600 mb-1">Grade {getGradeLevel(student.grade)}</p>
+<p className="text-sm text-gray-600 mb-1">Grade {getGradeLevel(student.grade_c || student.grade)}</p>
             <div className="flex items-center space-x-2">
-              <Badge variant={getStatusVariant(student.status)}>
-                {student.status || "Active"}
+<Badge variant={getStatusVariant(student.status_c || student.status)}>
+                {student.status_c || student.status || "Active"}
               </Badge>
             </div>
           </div>
@@ -59,15 +59,15 @@ const StudentCard = ({ student, onEdit, onDelete }) => {
         <div className="space-y-3 mb-6">
           <div className="flex items-center text-sm text-gray-600">
             <ApperIcon name="Mail" className="w-4 h-4 mr-2 text-gray-400" />
-            <span className="truncate">{student.email}</span>
+<span className="truncate">{student.email_c || student.email}</span>
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <ApperIcon name="Phone" className="w-4 h-4 mr-2 text-gray-400" />
-            <span>{student.phone || "N/A"}</span>
+<span>{student.phone_c || student.phone || "N/A"}</span>
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <ApperIcon name="Calendar" className="w-4 h-4 mr-2 text-gray-400" />
-            <span>Enrolled {new Date(student.enrollmentDate).toLocaleDateString()}</span>
+<span>Enrolled {new Date(student.enrollment_date_c || student.enrollmentDate).toLocaleDateString()}</span>
           </div>
         </div>
 

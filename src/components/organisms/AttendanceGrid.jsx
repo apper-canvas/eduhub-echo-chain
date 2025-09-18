@@ -12,16 +12,16 @@ const AttendanceGrid = ({ attendance, students, classes, onUpdateAttendance }) =
   const weekStart = startOfWeek(selectedWeek, { weekStartsOn: 1 });
   const weekDays = Array.from({ length: 5 }, (_, i) => addDays(weekStart, i));
 
-  const getStudentName = (studentId) => {
+const getStudentName = (studentId) => {
     const student = students.find(s => s.Id === parseInt(studentId));
-    return student ? `${student.firstName} ${student.lastName}` : "Unknown Student";
+    return student ? `${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}` : "Unknown Student";
   };
 
   const getAttendanceForDate = (studentId, date) => {
-    const dateStr = format(date, "yyyy-MM-dd");
+const dateStr = format(date, "yyyy-MM-dd");
     return attendance.find(a => 
       parseInt(a.studentId) === parseInt(studentId) && 
-      a.date.startsWith(dateStr)
+      (a.date_c || a.date).startsWith(dateStr)
     );
   };
 
@@ -34,11 +34,11 @@ const AttendanceGrid = ({ attendance, students, classes, onUpdateAttendance }) =
         await onUpdateAttendance(existing.Id, { ...existing, status });
       } else {
         const newAttendance = {
-          studentId: studentId.toString(),
-          classId: "1", // Default class
-          date: dateStr,
-          status,
-          notes: ""
+student_id_c: parseInt(studentId),
+          class_id_c: 1, // Default class
+          date_c: dateStr,
+          status_c: status,
+          notes_c: ""
         };
         await onUpdateAttendance(null, newAttendance);
       }
@@ -124,7 +124,7 @@ const AttendanceGrid = ({ attendance, students, classes, onUpdateAttendance }) =
                         <ApperIcon name="User" className="w-4 h-4 text-primary-600" />
                       </div>
                       <span className="font-medium text-gray-900">
-                        {student.firstName} {student.lastName}
+{student.first_name_c || student.firstName} {student.last_name_c || student.lastName}
                       </span>
                     </div>
                   </td>

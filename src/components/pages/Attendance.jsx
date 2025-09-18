@@ -57,9 +57,9 @@ const Attendance = () => {
   const calculateAttendanceStats = () => {
     if (attendance.length === 0) return { presentRate: 0, absentRate: 0, lateRate: 0 };
 
-    const present = attendance.filter(a => a.status === "present").length;
-    const absent = attendance.filter(a => a.status === "absent").length;
-    const late = attendance.filter(a => a.status === "late").length;
+const present = attendance.filter(a => (a.status_c || a.status) === "present").length;
+    const absent = attendance.filter(a => (a.status_c || a.status) === "absent").length;
+    const late = attendance.filter(a => (a.status_c || a.status) === "late").length;
     const total = attendance.length;
 
     return {
@@ -162,8 +162,8 @@ const Attendance = () => {
         <CardContent>
           <div className="space-y-3">
             {attendance
-              .filter(a => a.status === "absent")
-              .sort((a, b) => new Date(b.date) - new Date(a.date))
+.filter(a => (a.status_c || a.status) === "absent")
+              .sort((a, b) => new Date(b.date_c || b.date) - new Date(a.date_c || a.date))
               .slice(0, 5)
               .map((record) => {
                 const student = students.find(s => s.Id === parseInt(record.studentId));
@@ -175,10 +175,10 @@ const Attendance = () => {
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">
-                          {student ? `${student.firstName} ${student.lastName}` : "Unknown Student"}
+                          {student ? `${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}` : "Unknown Student"}
                         </p>
                         <p className="text-sm text-gray-600">
-                          {new Date(record.date).toLocaleDateString()}
+                          {new Date(record.date_c || record.date).toLocaleDateString()}
                         </p>
                       </div>
                     </div>

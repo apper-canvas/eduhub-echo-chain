@@ -53,7 +53,7 @@ const Grades = () => {
     if (grades.length === 0) return { avgGrade: 0, totalAssignments: 0, gradingProgress: 0 };
 
     const avgGrade = Math.round(
-      grades.reduce((sum, grade) => sum + (grade.score / grade.maxScore * 100), 0) / grades.length
+grades.reduce((sum, grade) => sum + ((grade.score_c || grade.score) / (grade.max_score_c || grade.maxScore) * 100), 0) / grades.length
     );
 
     const totalAssignments = grades.length;

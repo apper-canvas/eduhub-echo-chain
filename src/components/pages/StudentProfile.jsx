@@ -50,13 +50,13 @@ const StudentProfile = () => {
 
   const calculateGPA = () => {
     if (grades.length === 0) return "N/A";
-    const totalPoints = grades.reduce((sum, grade) => sum + (grade.score / grade.maxScore * 4), 0);
+const totalPoints = grades.reduce((sum, grade) => sum + ((grade.score_c || grade.score) / (grade.max_score_c || grade.maxScore) * 4), 0);
     return (totalPoints / grades.length).toFixed(2);
   };
 
   const calculateAttendanceRate = () => {
     if (attendance.length === 0) return "N/A";
-    const presentDays = attendance.filter(a => a.status === "present").length;
+const presentDays = attendance.filter(a => (a.status_c || a.status) === "present").length;
     return Math.round((presentDays / attendance.length) * 100);
   };
 
@@ -89,7 +89,7 @@ const StudentProfile = () => {
           </Button>
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-              {student.firstName} {student.lastName}
+{student.first_name_c || student.firstName} {student.last_name_c || student.lastName}
             </h1>
             <p className="text-gray-600">Student Profile</p>
           </div>
@@ -107,10 +107,10 @@ const StudentProfile = () => {
             <CardContent className="p-6">
               <div className="text-center mb-6">
                 <div className="w-24 h-24 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                  {student.photo ? (
+{(student.photo_c || student.photo) ? (
                     <img
                       src={student.photo}
-                      alt={`${student.firstName} ${student.lastName}`}
+alt={`${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName}`}
                       className="w-24 h-24 rounded-full object-cover"
                     />
                   ) : (
@@ -118,10 +118,10 @@ const StudentProfile = () => {
                   )}
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  {student.firstName} {student.lastName}
+{student.first_name_c || student.firstName} {student.last_name_c || student.lastName}
                 </h2>
                 <Badge variant={getStatusVariant(student.status)}>
-                  {student.status}
+{student.status_c || student.status}
                 </Badge>
               </div>
 
@@ -130,7 +130,7 @@ const StudentProfile = () => {
                   <ApperIcon name="GraduationCap" className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm text-gray-600">Grade</p>
-                    <p className="font-medium">{student.grade}</p>
+<p className="font-medium">{student.grade_c || student.grade}</p>
                   </div>
                 </div>
 
@@ -138,7 +138,7 @@ const StudentProfile = () => {
                   <ApperIcon name="Mail" className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm text-gray-600">Email</p>
-                    <p className="font-medium">{student.email}</p>
+<p className="font-medium">{student.email_c || student.email}</p>
                   </div>
                 </div>
 
@@ -146,7 +146,7 @@ const StudentProfile = () => {
                   <ApperIcon name="Phone" className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
                     <p className="text-sm text-gray-600">Phone</p>
-                    <p className="font-medium">{student.phone || "N/A"}</p>
+<p className="font-medium">{student.phone_c || student.phone || "N/A"}</p>
                   </div>
                 </div>
 
@@ -154,7 +154,7 @@ const StudentProfile = () => {
                   <ApperIcon name="MapPin" className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-600">Address</p>
-                    <p className="font-medium">{student.address || "N/A"}</p>
+<p className="font-medium">{student.address_c || student.address || "N/A"}</p>
                   </div>
                 </div>
 
@@ -162,7 +162,7 @@ const StudentProfile = () => {
                   <ApperIcon name="Users" className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-600">Parent Contact</p>
-                    <p className="font-medium">{student.parentContact || "N/A"}</p>
+<p className="font-medium">{student.parent_contact_c || student.parentContact || "N/A"}</p>
                   </div>
                 </div>
 
@@ -171,7 +171,7 @@ const StudentProfile = () => {
                   <div>
                     <p className="text-sm text-gray-600">Enrolled</p>
                     <p className="font-medium">
-                      {new Date(student.enrollmentDate).toLocaleDateString()}
+{new Date(student.enrollment_date_c || student.enrollmentDate).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
@@ -237,14 +237,14 @@ const StudentProfile = () => {
                   return (
                     <div key={grade.Id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <div>
-                        <h4 className="font-medium text-gray-900">{grade.assignmentName}</h4>
+<h4 className="font-medium text-gray-900">{grade.assignment_name_c || grade.assignmentName}</h4>
                         <p className="text-sm text-gray-600">
-                          {new Date(grade.date).toLocaleDateString()}
+{new Date(grade.date_c || grade.date).toLocaleDateString()}
                         </p>
                       </div>
                       <div className="text-right">
                         <Badge variant={getGradeColor(percentage)}>
-                          {grade.score}/{grade.maxScore} ({percentage}%)
+{grade.score_c || grade.score}/{grade.max_score_c || grade.maxScore} ({percentage}%)
                         </Badge>
                       </div>
                     </div>
@@ -277,9 +277,9 @@ const StudentProfile = () => {
                         <ApperIcon name="FileText" className="w-5 h-5 text-blue-600" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900">{doc.title}</h4>
+<h4 className="font-medium text-gray-900">{doc.title_c || doc.title}</h4>
                         <p className="text-sm text-gray-600">
-                          {doc.type} • {new Date(doc.uploadDate).toLocaleDateString()}
+{doc.type_c || doc.type} • {new Date(doc.upload_date_c || doc.uploadDate).toLocaleDateString()}
                         </p>
                       </div>
                     </div>

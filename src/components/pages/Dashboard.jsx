@@ -46,22 +46,22 @@ const Dashboard = () => {
   }, []);
 
   const calculateStats = () => {
-    const activeStudents = students.filter(s => s.status === "Active").length;
+const activeStudents = students.filter(s => s.status_c === "Active" || s.status === "Active").length;
     const totalClasses = classes.length;
     
     const recentAttendance = attendance.filter(a => {
-      const recordDate = new Date(a.date);
+      const recordDate = new Date(a.date_c || a.date);
       const lastWeek = new Date();
       lastWeek.setDate(lastWeek.getDate() - 7);
       return recordDate >= lastWeek;
     });
     
-    const presentCount = recentAttendance.filter(a => a.status === "present").length;
+    const presentCount = recentAttendance.filter(a => (a.status_c || a.status) === "present").length;
     const attendanceRate = recentAttendance.length > 0 ? 
       Math.round((presentCount / recentAttendance.length) * 100) : 0;
 
     const recentGrades = grades.filter(g => {
-      const gradeDate = new Date(g.date);
+      const gradeDate = new Date(g.date_c || g.date);
       const lastMonth = new Date();
       lastMonth.setMonth(lastMonth.getMonth() - 1);
       return gradeDate >= lastMonth;
@@ -82,8 +82,8 @@ const Dashboard = () => {
     const activities = [];
 
     // Recent grades
-    const sortedGrades = [...grades]
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
+const sortedGrades = [...grades]
+      .sort((a, b) => new Date(b.date_c || b.date) - new Date(a.date_c || a.date))
       .slice(0, 3);
 
     sortedGrades.forEach(grade => {
@@ -91,8 +91,8 @@ const Dashboard = () => {
       if (student) {
         activities.push({
           type: "grade",
-          description: `${student.firstName} ${student.lastName} received ${grade.score}/${grade.maxScore} on ${grade.assignmentName}`,
-          time: grade.date,
+          description: `${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName} received ${grade.score_c || grade.score}/${grade.max_score_c || grade.maxScore} on ${grade.assignment_name_c || grade.assignmentName}`,
+          time: grade.date_c || grade.date,
           icon: "BookOpen",
           color: "blue"
         });
@@ -106,12 +106,12 @@ const Dashboard = () => {
       .slice(0, 2);
 
     recentAbsences.forEach(record => {
-      const student = students.find(s => s.Id === parseInt(record.studentId));
+const student = students.find(s => s.Id === parseInt(record.studentId));
       if (student) {
         activities.push({
           type: "attendance",
-          description: `${student.firstName} ${student.lastName} was absent`,
-          time: record.date,
+          description: `${student.first_name_c || student.firstName} ${student.last_name_c || student.lastName} was absent`,
+          time: record.date_c || record.date,
           icon: "Calendar",
           color: "red"
         });
@@ -222,17 +222,17 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {classes.slice(0, 5).map((classItem) => (
+{classes.slice(0, 5).map((classItem) => (
                 <div key={classItem.Id} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
                   <div>
-                    <h4 className="font-medium text-gray-900">{classItem.name}</h4>
-                    <p className="text-sm text-gray-600">{classItem.teacher}</p>
+                    <h4 className="font-medium text-gray-900">{classItem.name_c || classItem.name}</h4>
+                    <p className="text-sm text-gray-600">{classItem.teacher_c || classItem.teacher}</p>
                   </div>
                   <div className="text-right">
                     <Badge variant="secondary">
-                      {classItem.students.length}/{classItem.maxCapacity}
+                      {classItem.students?.length || 0}/{classItem.max_capacity_c || classItem.maxCapacity || 0}
                     </Badge>
-                    <p className="text-xs text-gray-500 mt-1">{classItem.room}</p>
+                    <p className="text-xs text-gray-500 mt-1">{classItem.room_c || classItem.room}</p>
                   </div>
                 </div>
               ))}

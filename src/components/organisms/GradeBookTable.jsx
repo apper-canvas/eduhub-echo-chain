@@ -11,7 +11,7 @@ const GradeBookTable = ({ grades, students, classes, onUpdateGrade }) => {
   const [editValue, setEditValue] = useState("");
 
   const getStudentName = (studentId) => {
-    const student = students.find(s => s.Id === parseInt(studentId));
+const student = students.find(s => s.Id === parseInt(studentId));
     return student ? `${student.firstName} ${student.lastName}` : "Unknown Student";
   };
 
@@ -69,7 +69,7 @@ const GradeBookTable = ({ grades, students, classes, onUpdateGrade }) => {
   };
 
   const sortedGrades = [...grades].sort((a, b) => {
-    const studentA = getStudentName(a.studentId);
+const studentA = getStudentName(a.studentId);
     const studentB = getStudentName(b.studentId);
     return studentA.localeCompare(studentB);
   });
@@ -98,7 +98,7 @@ const GradeBookTable = ({ grades, students, classes, onUpdateGrade }) => {
             </thead>
             <tbody>
               {sortedGrades.map((grade) => {
-                const percentage = getGradePercentage(grade.score, grade.maxScore);
+const percentage = getGradePercentage(grade.score_c || grade.score, grade.max_score_c || grade.maxScore);
                 const gradeLetter = getGradeLetter(percentage);
                 const isEditing = editingGrade === grade.Id;
 
@@ -118,7 +118,7 @@ const GradeBookTable = ({ grades, students, classes, onUpdateGrade }) => {
                       <span className="text-gray-700">{getClassName(grade.classId)}</span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-gray-700">{grade.assignmentName}</span>
+<span className="text-gray-700">{grade.assignment_name_c || grade.assignmentName}</span>
                     </td>
                     <td className="py-4 px-4">
                       {isEditing ? (
@@ -129,14 +129,14 @@ const GradeBookTable = ({ grades, students, classes, onUpdateGrade }) => {
                             onChange={(e) => setEditValue(e.target.value)}
                             className="w-20"
                             min="0"
-                            max={grade.maxScore}
+max={grade.max_score_c || grade.maxScore}
                             step="0.1"
                           />
                           <span className="text-gray-500">/ {grade.maxScore}</span>
                         </div>
                       ) : (
                         <span className="font-medium text-gray-900">
-                          {grade.score} / {grade.maxScore}
+{grade.score_c || grade.score} / {grade.max_score_c || grade.maxScore}
                         </span>
                       )}
                     </td>
@@ -147,7 +147,7 @@ const GradeBookTable = ({ grades, students, classes, onUpdateGrade }) => {
                     </td>
                     <td className="py-4 px-4">
                       <span className="text-gray-600">
-                        {new Date(grade.date).toLocaleDateString()}
+{new Date(grade.date_c || grade.date).toLocaleDateString()}
                       </span>
                     </td>
                     <td className="py-4 px-4">
