@@ -81,8 +81,22 @@ if (student) {
     setErrors({});
   }, [student, isOpen]);
 
-const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+const handleInputChange = (e, fieldName) => {
+    let name, value, type, checked;
+    
+    // Handle both event objects and direct values
+    if (e && e.target) {
+      // Standard event object from regular inputs
+      ({ name, value, type, checked } = e.target);
+    } else {
+      // Direct value from Rating, Radio, or other custom components
+      // For these cases, we need to infer the field name from context
+      name = fieldName;
+      value = e;
+      type = null;
+      checked = null;
+    }
+    
     const inputValue = type === 'checkbox' ? checked : value;
     
     setFormData(prev => ({
