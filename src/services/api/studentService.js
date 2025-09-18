@@ -255,7 +255,6 @@ if (record.errors) {
   async update(id, studentData) {
     await delay(400);
     try {
-      const { ApperClient } = window.ApperSDK;
 const { ApperClient } = window.ApperSDK;
       const apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
@@ -329,7 +328,6 @@ record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error.message
   async delete(id) {
     await delay(300);
     try {
-      const { ApperClient } = window.ApperSDK;
 const { ApperClient } = window.ApperSDK;
       const apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
@@ -375,7 +373,6 @@ const { ApperClient } = window.ApperSDK;
   async search(query) {
     await delay(250);
     try {
-      const { ApperClient } = window.ApperSDK;
 const { ApperClient } = window.ApperSDK;
       const apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
