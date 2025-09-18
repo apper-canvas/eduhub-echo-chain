@@ -14,7 +14,7 @@ export const studentService = {
 
       const params = {
         fields: [
-          {"field": {"Name": "Id"}},
+{"field": {"Name": "Id"}},
           {"field": {"Name": "Name"}},
           {"field": {"Name": "first_name_c"}},
           {"field": {"Name": "last_name_c"}},
@@ -26,6 +26,18 @@ export const studentService = {
           {"field": {"Name": "address_c"}},
           {"field": {"Name": "parent_contact_c"}},
           {"field": {"Name": "status_c"}},
+          {"field": {"Name": "subscribe_to_newsletter_c"}},
+          {"field": {"Name": "agree_to_terms_c"}},
+          {"field": {"Name": "tuition_fee_c"}},
+          {"field": {"Name": "scholarship_amount_c"}},
+          {"field": {"Name": "preferred_study_mode_c"}},
+          {"field": {"Name": "study_type_c"}},
+          {"field": {"Name": "personal_website_c"}},
+          {"field": {"Name": "social_media_profile_c"}},
+          {"field": {"Name": "course_satisfaction_rating_c"}},
+          {"field": {"Name": "instructor_rating_c"}},
+          {"field": {"Name": "interests_c"}},
+          {"field": {"Name": "skills_c"}},
           {"field": {"Name": "Tags"}}
         ],
         orderBy: [{"fieldName": "Id", "sorttype": "DESC"}]
@@ -57,7 +69,7 @@ export const studentService = {
       });
 
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Id"}},
           {"field": {"Name": "Name"}},
           {"field": {"Name": "first_name_c"}},
@@ -70,6 +82,18 @@ export const studentService = {
           {"field": {"Name": "address_c"}},
           {"field": {"Name": "parent_contact_c"}},
           {"field": {"Name": "status_c"}},
+          {"field": {"Name": "subscribe_to_newsletter_c"}},
+          {"field": {"Name": "agree_to_terms_c"}},
+          {"field": {"Name": "tuition_fee_c"}},
+          {"field": {"Name": "scholarship_amount_c"}},
+          {"field": {"Name": "preferred_study_mode_c"}},
+          {"field": {"Name": "study_type_c"}},
+          {"field": {"Name": "personal_website_c"}},
+          {"field": {"Name": "social_media_profile_c"}},
+          {"field": {"Name": "course_satisfaction_rating_c"}},
+          {"field": {"Name": "instructor_rating_c"}},
+          {"field": {"Name": "interests_c"}},
+          {"field": {"Name": "skills_c"}},
           {"field": {"Name": "Tags"}}
         ]
       };
@@ -101,7 +125,7 @@ export const studentService = {
 
       const params = {
         records: [{
-          Name: `${studentData.first_name_c || studentData.firstName} ${studentData.last_name_c || studentData.lastName}`,
+Name: `${studentData.first_name_c || studentData.firstName} ${studentData.last_name_c || studentData.lastName}`,
           first_name_c: studentData.first_name_c || studentData.firstName,
           last_name_c: studentData.last_name_c || studentData.lastName,
           email_c: studentData.email_c || studentData.email,
@@ -112,6 +136,18 @@ export const studentService = {
           address_c: studentData.address_c || studentData.address || "",
           parent_contact_c: studentData.parent_contact_c || studentData.parentContact || "",
           status_c: studentData.status_c || studentData.status || "Active",
+          subscribe_to_newsletter_c: studentData.subscribe_to_newsletter_c || (studentData.subscribeNewsletter ? "Yes" : "No"),
+          agree_to_terms_c: studentData.agree_to_terms_c || (studentData.agreeTerms ? "Agree" : "Disagree"),
+          tuition_fee_c: studentData.tuition_fee_c || studentData.tuitionFee || null,
+          scholarship_amount_c: studentData.scholarship_amount_c || studentData.scholarshipAmount || null,
+          preferred_study_mode_c: studentData.preferred_study_mode_c || studentData.studyMode || "",
+          study_type_c: studentData.study_type_c || studentData.studyType || "",
+          personal_website_c: studentData.personal_website_c || studentData.personalWebsite || "",
+          social_media_profile_c: studentData.social_media_profile_c || studentData.socialMedia || "",
+          course_satisfaction_rating_c: studentData.course_satisfaction_rating_c || studentData.courseSatisfaction || null,
+          instructor_rating_c: studentData.instructor_rating_c || studentData.instructorRating || null,
+          interests_c: studentData.interests_c || studentData.interests || "",
+          skills_c: studentData.skills_c || studentData.skills || "",
           Tags: studentData.Tags || ""
         }]
       };
@@ -164,7 +200,7 @@ export const studentService = {
         records: [{
           Id: parseInt(id),
           Name: `${studentData.first_name_c || studentData.firstName} ${studentData.last_name_c || studentData.lastName}`,
-          first_name_c: studentData.first_name_c || studentData.firstName,
+first_name_c: studentData.first_name_c || studentData.firstName,
           last_name_c: studentData.last_name_c || studentData.lastName,
           email_c: studentData.email_c || studentData.email,
           phone_c: studentData.phone_c || studentData.phone,
@@ -174,6 +210,18 @@ export const studentService = {
           address_c: studentData.address_c || studentData.address,
           parent_contact_c: studentData.parent_contact_c || studentData.parentContact,
           status_c: studentData.status_c || studentData.status,
+          subscribe_to_newsletter_c: studentData.subscribe_to_newsletter_c || (studentData.subscribeNewsletter ? "Yes" : "No"),
+          agree_to_terms_c: studentData.agree_to_terms_c || (studentData.agreeTerms ? "Agree" : "Disagree"),
+          tuition_fee_c: studentData.tuition_fee_c || studentData.tuitionFee,
+          scholarship_amount_c: studentData.scholarship_amount_c || studentData.scholarshipAmount,
+          preferred_study_mode_c: studentData.preferred_study_mode_c || studentData.studyMode,
+          study_type_c: studentData.study_type_c || studentData.studyType,
+          personal_website_c: studentData.personal_website_c || studentData.personalWebsite,
+          social_media_profile_c: studentData.social_media_profile_c || studentData.socialMedia,
+          course_satisfaction_rating_c: studentData.course_satisfaction_rating_c || studentData.courseSatisfaction,
+          instructor_rating_c: studentData.instructor_rating_c || studentData.instructorRating,
+          interests_c: studentData.interests_c || studentData.interests,
+          skills_c: studentData.skills_c || studentData.skills,
           Tags: studentData.Tags || ""
         }]
       };
@@ -270,7 +318,7 @@ export const studentService = {
 
       const params = {
         fields: [
-          {"field": {"Name": "Id"}},
+{"field": {"Name": "Id"}},
           {"field": {"Name": "Name"}},
           {"field": {"Name": "first_name_c"}},
           {"field": {"Name": "last_name_c"}},
@@ -282,6 +330,18 @@ export const studentService = {
           {"field": {"Name": "address_c"}},
           {"field": {"Name": "parent_contact_c"}},
           {"field": {"Name": "status_c"}},
+          {"field": {"Name": "subscribe_to_newsletter_c"}},
+          {"field": {"Name": "agree_to_terms_c"}},
+          {"field": {"Name": "tuition_fee_c"}},
+          {"field": {"Name": "scholarship_amount_c"}},
+          {"field": {"Name": "preferred_study_mode_c"}},
+          {"field": {"Name": "study_type_c"}},
+          {"field": {"Name": "personal_website_c"}},
+          {"field": {"Name": "social_media_profile_c"}},
+          {"field": {"Name": "course_satisfaction_rating_c"}},
+          {"field": {"Name": "instructor_rating_c"}},
+          {"field": {"Name": "interests_c"}},
+          {"field": {"Name": "skills_c"}},
           {"field": {"Name": "Tags"}}
         ]
       };

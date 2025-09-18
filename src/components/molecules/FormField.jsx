@@ -73,11 +73,13 @@ const FormField = ({
   const Component = type === "select" ? Select : Input;
   
   return (
-    <div className={`space-y-2 ${className}`}>
-      <label className="block text-sm font-medium text-gray-700">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-{type === "select" ? (
+<div className={`space-y-2 ${className}`}>
+      {type !== "checkbox" && (
+        <label className="block text-sm font-medium text-gray-700">
+          {label} {required && <span className="text-red-500">*</span>}
+        </label>
+      )}
+      {type === "select" ? (
         <Select error={error} {...props}>
           <option value="">Select {label}</option>
           {options.map((option) => (
@@ -86,10 +88,46 @@ const FormField = ({
             </option>
           ))}
         </Select>
+      ) : type === "checkbox" ? (
+        <label className="flex items-center space-x-3 cursor-pointer">
+          <input
+            type="checkbox"
+            className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 focus:ring-2"
+            {...props}
+          />
+          <span className="text-sm font-medium text-gray-700">
+            {label} {required && <span className="text-red-500">*</span>}
+          </span>
+        </label>
+      ) : type === "currency" ? (
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+          <Input
+            type="number"
+            step="0.01"
+            min="0"
+            className="pl-8"
+            error={error}
+            {...props}
+          />
+        </div>
       ) : type === "rating" ? (
         <Rating error={error} {...props} />
       ) : type === "radio" ? (
         <Radio options={options} error={error} {...props} />
+      ) : type === "tag" ? (
+        <Input
+          type="text"
+          error={error}
+          placeholder="Enter comma-separated values"
+          {...props}
+        />
+      ) : type === "url" ? (
+        <Input
+          type="url"
+          error={error}
+          {...props}
+        />
       ) : (
         <Component type={type} error={error} {...props} />
       )}

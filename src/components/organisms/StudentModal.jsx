@@ -4,7 +4,7 @@ import FormField from "@/components/molecules/FormField";
 import ApperIcon from "@/components/ApperIcon";
 
 const StudentModal = ({ isOpen, onClose, onSave, student = null }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -12,23 +12,47 @@ const StudentModal = ({ isOpen, onClose, onSave, student = null }) => {
     grade: "",
     address: "",
     parentContact: "",
-    status: "Active"
+    status: "Active",
+    subscribeNewsletter: false,
+    agreeTerms: false,
+    tuitionFee: "",
+    scholarshipAmount: "",
+    studyMode: "",
+    studyType: "",
+    personalWebsite: "",
+    socialMedia: "",
+    courseSatisfaction: 0,
+    instructorRating: 0,
+    interests: "",
+    skills: ""
   });
 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (student) {
+if (student) {
       setFormData({
-        firstName: student.firstName || "",
-        lastName: student.lastName || "",
-        email: student.email || "",
-        phone: student.phone || "",
-        grade: student.grade || "",
-        address: student.address || "",
-        parentContact: student.parentContact || "",
-        status: student.status || "Active"
+        firstName: student.firstName || student.first_name_c || "",
+        lastName: student.lastName || student.last_name_c || "",
+        email: student.email || student.email_c || "",
+        phone: student.phone || student.phone_c || "",
+        grade: student.grade || student.grade_c || "",
+        address: student.address || student.address_c || "",
+        parentContact: student.parentContact || student.parent_contact_c || "",
+        status: student.status || student.status_c || "Active",
+        subscribeNewsletter: student.subscribeNewsletter || student.subscribe_to_newsletter_c || false,
+        agreeTerms: student.agreeTerms || student.agree_to_terms_c || false,
+        tuitionFee: student.tuitionFee || student.tuition_fee_c || "",
+        scholarshipAmount: student.scholarshipAmount || student.scholarship_amount_c || "",
+        studyMode: student.studyMode || student.preferred_study_mode_c || "",
+        studyType: student.studyType || student.study_type_c || "",
+        personalWebsite: student.personalWebsite || student.personal_website_c || "",
+        socialMedia: student.socialMedia || student.social_media_profile_c || "",
+        courseSatisfaction: student.courseSatisfaction || student.course_satisfaction_rating_c || 0,
+        instructorRating: student.instructorRating || student.instructor_rating_c || 0,
+        interests: student.interests || student.interests_c || "",
+        skills: student.skills || student.skills_c || ""
       });
     } else {
       setFormData({
@@ -39,17 +63,31 @@ const StudentModal = ({ isOpen, onClose, onSave, student = null }) => {
         grade: "",
         address: "",
         parentContact: "",
-        status: "Active"
+        status: "Active",
+        subscribeNewsletter: false,
+        agreeTerms: false,
+        tuitionFee: "",
+        scholarshipAmount: "",
+        studyMode: "",
+        studyType: "",
+        personalWebsite: "",
+        socialMedia: "",
+        courseSatisfaction: 0,
+        instructorRating: 0,
+        interests: "",
+        skills: ""
       });
     }
     setErrors({});
   }, [student, isOpen]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    const inputValue = type === 'checkbox' ? checked : value;
+    
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: inputValue
     }));
     
     // Clear error when user starts typing
@@ -61,7 +99,7 @@ const StudentModal = ({ isOpen, onClose, onSave, student = null }) => {
     }
   };
 
-  const validateForm = () => {
+const validateForm = () => {
     const newErrors = {};
     
     if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
@@ -71,6 +109,22 @@ const StudentModal = ({ isOpen, onClose, onSave, student = null }) => {
     
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
+    }
+
+    // Validate website URLs
+    if (formData.personalWebsite && !/^https?:\/\/.+/.test(formData.personalWebsite)) {
+      newErrors.personalWebsite = "Please enter a valid URL (starting with http:// or https://)";
+    }
+    if (formData.socialMedia && !/^https?:\/\/.+/.test(formData.socialMedia)) {
+      newErrors.socialMedia = "Please enter a valid URL (starting with http:// or https://)";
+    }
+
+    // Validate currency fields
+    if (formData.tuitionFee && (isNaN(formData.tuitionFee) || parseFloat(formData.tuitionFee) < 0)) {
+      newErrors.tuitionFee = "Please enter a valid amount";
+    }
+    if (formData.scholarshipAmount && (isNaN(formData.scholarshipAmount) || parseFloat(formData.scholarshipAmount) < 0)) {
+      newErrors.scholarshipAmount = "Please enter a valid amount";
     }
 
     setErrors(newErrors);
@@ -137,7 +191,7 @@ const StudentModal = ({ isOpen, onClose, onSave, student = null }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               label="First Name"
               name="firstName"
@@ -219,6 +273,140 @@ const StudentModal = ({ isOpen, onClose, onSave, student = null }) => {
                 placeholder="Enter parent/guardian contact information"
               />
             </div>
+
+            {/* Newsletter and Terms Checkboxes */}
+            <div className="md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  label="Subscribe to Newsletter"
+                  name="subscribeNewsletter"
+                  type="checkbox"
+                  checked={formData.subscribeNewsletter}
+                  onChange={handleInputChange}
+                  error={errors.subscribeNewsletter}
+                />
+                
+                <FormField
+                  label="Agree to Terms and Conditions"
+                  name="agreeTerms"
+                  type="checkbox"
+                  checked={formData.agreeTerms}
+                  onChange={handleInputChange}
+                  error={errors.agreeTerms}
+                />
+              </div>
+            </div>
+
+            {/* Financial Information */}
+            <FormField
+              label="Tuition Fee"
+              name="tuitionFee"
+              type="currency"
+              value={formData.tuitionFee}
+              onChange={handleInputChange}
+              error={errors.tuitionFee}
+              placeholder="0.00"
+            />
+
+            <FormField
+              label="Scholarship Amount"
+              name="scholarshipAmount"
+              type="currency"
+              value={formData.scholarshipAmount}
+              onChange={handleInputChange}
+              error={errors.scholarshipAmount}
+              placeholder="0.00"
+            />
+
+            {/* Study Preferences */}
+            <FormField
+              label="Preferred Study Mode"
+              name="studyMode"
+              type="radio"
+              value={formData.studyMode}
+              onChange={handleInputChange}
+              error={errors.studyMode}
+              options={[
+                { value: "Online", label: "Online" },
+                { value: "Offline", label: "Offline" }
+              ]}
+            />
+
+            <FormField
+              label="Study Type"
+              name="studyType"
+              type="radio"
+              value={formData.studyType}
+              onChange={handleInputChange}
+              error={errors.studyType}
+              options={[
+                { value: "Full-time", label: "Full-time" },
+                { value: "Part-time", label: "Part-time" }
+              ]}
+            />
+
+            {/* Website Information */}
+            <FormField
+              label="Personal Website"
+              name="personalWebsite"
+              type="url"
+              value={formData.personalWebsite}
+              onChange={handleInputChange}
+              error={errors.personalWebsite}
+              placeholder="https://example.com"
+            />
+
+            <FormField
+              label="Social Media Profile"
+              name="socialMedia"
+              type="url"
+              value={formData.socialMedia}
+              onChange={handleInputChange}
+              error={errors.socialMedia}
+              placeholder="https://example.com"
+            />
+
+            {/* Rating Fields */}
+            <FormField
+              label="Course Satisfaction Rating"
+              name="courseSatisfaction"
+              type="rating"
+              value={formData.courseSatisfaction}
+              onChange={handleInputChange}
+              error={errors.courseSatisfaction}
+              max={5}
+            />
+
+            <FormField
+              label="Instructor Rating"
+              name="instructorRating"
+              type="rating"
+              value={formData.instructorRating}
+              onChange={handleInputChange}
+              error={errors.instructorRating}
+              max={5}
+            />
+
+            {/* Tag Fields */}
+            <FormField
+              label="Interests"
+              name="interests"
+              type="tag"
+              value={formData.interests}
+              onChange={handleInputChange}
+              error={errors.interests}
+              placeholder="Academic, Extracurricular"
+            />
+
+            <FormField
+              label="Skills"
+              name="skills"
+              type="tag"
+              value={formData.skills}
+              onChange={handleInputChange}
+              error={errors.skills}
+              placeholder="Programming, Public Speaking, Graphic Design"
+            />
           </div>
 
           <div className="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
