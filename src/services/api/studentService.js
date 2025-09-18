@@ -70,11 +70,13 @@ function formatCurrencyForAPI(currencyValue) {
 export const studentService = {
   async getAll() {
     await delay(300);
-    try {
+try {
       const { ApperClient } = window.ApperSDK;
       const apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
       const params = {
         fields: [
 {"field": {"Name": "Id"}},
@@ -254,11 +256,11 @@ if (record.errors) {
     await delay(400);
     try {
       const { ApperClient } = window.ApperSDK;
+const { ApperClient } = window.ApperSDK;
       const apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
-
       const params = {
         records: [{
           Id: parseInt(id),
@@ -328,11 +330,11 @@ record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error.message
     await delay(300);
     try {
       const { ApperClient } = window.ApperSDK;
+const { ApperClient } = window.ApperSDK;
       const apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
-
       const params = { 
         RecordIds: [parseInt(id)]
       };
@@ -374,11 +376,11 @@ record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error.message
     await delay(250);
     try {
       const { ApperClient } = window.ApperSDK;
+const { ApperClient } = window.ApperSDK;
       const apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
-
       const params = {
         fields: [
 {"field": {"Name": "Id"}},
